@@ -2,26 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+input[type="email"],
+input[type="text"],
+input[type="password"] {
+  @apply block w-full my-4 rounded-xl;
+  @apply border py-2 px-4 border-gray-300 bg-gray-100;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+input[type="email"] :disabled,
+input[type="text"] :disabled,
+input[type="password"] :disabled {
+  @apply bg-gray-400 text-gray-700 text-sm border-0 cursor-not-allowed;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+button{
+  @apply block w-full text-gray-500 font-semibold border rounded-xl border-gray-500 px-6 py-2;
 }
+
+button[type="submit"], submit {
+  @apply border-0 bg-primary text-white;
+}
+button[type="submit"] :disabled, submit :disabled {
+  @apply cursor-not-allowed bg-red-400;
+}
+
