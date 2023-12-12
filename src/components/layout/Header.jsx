@@ -24,7 +24,7 @@ const Header = () => {
       {status === 'authenticated' ? (
         <div className="flex items-center gap-2">
         <Link href={"/profile"} className="flex flex-col items-center gap-1 ">
-          <Image src={userImage} width={40} height={40} alt="user image" className="rounded-full border border-primary border-1"/>
+          <Image src={userImage} width={100} height={100} alt="user image" className="w-[40px] h-[40px] rounded-full border border-primary border-1 object-cover"/>
           <p className="w-[100px] text-center text-slate-500 text-sm underline">{user}</p>
         </Link>
         <button onClick={()=>signOut()} className="bg-primary border-0 text-white px-5 py-1 rounded-full hover:bg-primary/90 transition">Logout</button>
