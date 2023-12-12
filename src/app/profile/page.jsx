@@ -34,6 +34,9 @@ const ProfilePage = () => {
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({name:userName})
     })
+    if(e.target.userName === userName) {
+      
+    }
     if(response.ok){
       setSaved(true);
     }
@@ -41,6 +44,19 @@ const ProfilePage = () => {
       setSaved(false)
     },3000)
     
+  }
+
+  async function handleFileChange(e){
+    const files = e.target.files;
+    if(files?.length === 1){
+      const data = new FormData;
+      data.set('files', files[0]);
+     await fetch('/api/upload', {
+       method: 'POST',
+       body: null,
+       headers: {'Content-Type': 'multipart:form-data'}
+      });
+    }
   }
 
   return (
@@ -56,7 +72,7 @@ const ProfilePage = () => {
             <Image src={userImage} width={80} height={80} alt="user image" className="rounded-full"/>
             <label htmlFor="profileImg"><PiImageSquareBold className="absolute text-3xl top-[40px] left-[25px] text-primary cursor-pointer bg-white p-1 rounded-full"/></label>
             </div>
-            <input type="file" id="profileImg" hidden/>
+            <input type="file" id="profileImg" hidden onChange={handleFileChange}/>
             <button className="mt-4 text-sm py-1 px-3" type="button">Change Avatar</button>
           </div>
           <form className="w-full grow" onSubmit={handleProfileInfoUpdate}>
