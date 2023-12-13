@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { PiImageSquareBold } from "react-icons/pi";
 import { useEdgeStore } from "../../../lib/edgeStore";
+import {toast} from "react-hot-toast";
 
 
 
@@ -14,10 +15,8 @@ const ProfilePage = () => {
   const session = useSession();
   const {status} = session;
   const [userName, setUserName] = useState('');
-  const [saved, setSaved] = useState(false);
   const [file, setFile] = useState(''); 
   const [image, setImage] = useState(''); 
-  const [showProgress, setShowpProgress] = useState('')
 
   useEffect(()=>{
     if(status === 'authenticated'){
@@ -37,22 +36,23 @@ const ProfilePage = () => {
   
   const handleProfileInfoUpdate = async (e) => {
     e.preventDefault();
-    const response = await fetch('/api/profile',{
-      method: 'PUT',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({name:userName, image})
-    })
-    if(e.target.userName === userName) {
-      
-    }
-    if(response.ok){
-      setSaved(true);
-    }
-    setTimeout(()=>{
-      setSaved(false)
-    },3000)
-    setShowpProgress('');
-  }
+    const savingPromise = new Promise(async(resolve, reject)=>{
+      const response = await fetch('/api/profile',{
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({name:userName, image})
+      })
+     if(response.ok) 
+     resolve() 
+       else 
+     reject()
+    });
+
+    toast.promise(savingPromise,{
+      loading: "Updating profile info",
+      success: "Profile updated!",
+      error: "Failed to update profile"
+    });
 
   // async function handleFileChange(e){
   //   const files = e.target.files;
@@ -66,6 +66,7 @@ const ProfilePage = () => {
   //     });
   //   }
   // }
+}
   
   const uploadImage =  async (e) => {
     if (file) {
@@ -73,27 +74,24 @@ const ProfilePage = () => {
         file,
         onProgressChange: (progress) => {
           // you can use this to show a progress bar
-          console.log(progress);
-          setShowpProgress(progress);
         },
       });  
       setImage(res.url);
+      toast.success("image uploaded");
     }};
+
 
     return (
     <section className="mt-8">
       <div className="w-[350px] md:w-[500px] max-w-xl mx-auto mt-10">
       <h1 className="text-center text-primary text-4xl ">Profile</h1>
-      {saved && (
-        <h2 className="text-center text-green-700 bg-green-200 p-4 mt-4 mb-4 rounded-lg">Profile Saved Successfully!</h2>
-      )}
+
       <div className="w-full flex flex-col gap-4 items-center">
           <div className="flex flex-col items-center mt-4">
             <div className="relative">
              {image && (
                <Image src={image} width={150} height={150} alt="user image" className="rounded-full w-[100px] h-[100px] object-cover"/>
              )} 
-             {showProgress ? (<p className="text-center mt-3 font-semibold text-green-500">{showProgress}</p>) : "" }
             <label htmlFor="profileImg"><PiImageSquareBold className="absolute text-3xl top-[60px] left-[35px] text-primary cursor-pointer bg-white p-1 rounded-full"/></label>
             </div>
             <input type="file" id="profileImg" hidden  onChange={(e) => setFile(e.target.files?.[0])} />
@@ -110,23 +108,5 @@ const ProfilePage = () => {
   )
 }
 
-export default ProfilePage
 
-
-
- const uploadImage =  async () => {
-
-  if (file) {
-    const res = await edgestore.publicFiles.upload({
-      file,
-      onProgressChange: (progress) => {
-        // you can use this to show a progress bar
-        console.log(progress);
-      },
-    });
-   
-    console.log(res);
-                
-
-  
-}}
+export default ProfilePage;
