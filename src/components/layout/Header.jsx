@@ -12,7 +12,7 @@ const Header = () => {
   const userImage = session?.data?.user?.image
 
   return (
-    <header className="flex mx-auto items-center justify-between  border-b pb-3 px-3 shadow-md">
+    <header className="flex mx-auto items-center justify-between">
     <Link href={"/"} className="text-primary font-semibold text-2xl">Nappoli</Link>
     <nav className="flex gap-8 text-gray-400 items-center">
       <Link href={"/"} className="hover:text-primary transition">Home</Link>

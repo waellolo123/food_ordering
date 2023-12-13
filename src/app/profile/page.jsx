@@ -8,20 +8,33 @@ import { useEdgeStore } from "../../../lib/edgeStore";
 import {toast} from "react-hot-toast";
 
 
-
 const ProfilePage = () => {
   const {edgestore} = useEdgeStore();
-
   const session = useSession();
   const {status} = session;
   const [userName, setUserName] = useState('');
   const [file, setFile] = useState(''); 
   const [image, setImage] = useState(''); 
+  const [phone, setPhone] = useState(''); 
+  const [streetAdress, setStreetAdress] = useState(''); 
+  const [postalCode, setPostalCode] = useState(''); 
+  const [city, setCity] = useState(''); 
+  const [country, setCountry] = useState(''); 
+
 
   useEffect(()=>{
     if(status === 'authenticated'){
       setUserName(session.data.user.name)
       setImage(session.data.user.image)
+       fetch('/api/profile').then((response)=>{
+        response.json().then((data)=>{
+          setPhone(data.phone);
+          setStreetAdress(data.streetAdress);
+          setPostalCode(data.postalCode);
+          setCity(data.city);
+          setCountry(data.country);
+        })
+      })
     }
   },[session, status])
 
@@ -40,7 +53,7 @@ const ProfilePage = () => {
       const response = await fetch('/api/profile',{
         method: 'PUT',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({name:userName, image})
+        body: JSON.stringify({name:userName, image, streetAdress, phone, postalCode, city, country})
       })
      if(response.ok) 
      resolve() 
@@ -98,8 +111,15 @@ const ProfilePage = () => {
             <button className="mt-4 text-sm py-1 px-3" type="button" onClick={uploadImage}>Change Avatar</button>
           </div>
           <form className="w-full grow" onSubmit={handleProfileInfoUpdate}>
-            <input type="text" placeholder="First and lastname" value={userName} onChange={(e)=>setUserName(e.target.value)}/>
-            <input type="email" value={session.data.user.email} className="bg-white border-none text-gray-400 " disabled/>
+            <input type="text" placeholder="First and lastname" className="mb-4" value={userName} onChange={(e)=>setUserName(e.target.value)}/>
+            <input type="email" value={session.data.user.email} className="bg-white border-none text-gray-400 mb-4" disabled/>
+            <input type="tel" className="bg-white border-none text-gray-400 mb-4" placeholder="Phone Number" value={phone} onChange={(e) => setPhone(e.target.value)}/>
+            <input type="text" className="bg-white border-none text-gray-400 mb-4" placeholder="Street address" value={streetAdress} onChange={(e) => setStreetAdress(e.target.value)}/>
+            <div className="flex items-center gap-3 mb-4">
+              <input type="text" className="bg-white border-none text-gray-400 my-0" placeholder="City" value={city} onChange={(e) => setCity(e.target.value)}/>
+              <input type="text" className="bg-white border-none text-gray-400 my-0" placeholder="Postal Code" value={postalCode} onChange={(e) => setPostalCode(e.target.value)}/>
+            </div>
+            <input type="text" className="bg-white border-none text-gray-400 mb-4" placeholder="Country" value={country} onChange={(e) => setCountry(e.target.value)}/>
             <button type="submit">Save</button>
           </form>
       </div>
@@ -110,3 +130,4 @@ const ProfilePage = () => {
 
 
 export default ProfilePage;
+

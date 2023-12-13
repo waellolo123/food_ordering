@@ -4,14 +4,16 @@
 
 input[type="email"],
 input[type="text"],
-input[type="password"] {
-  @apply block w-full my-4 rounded-xl;
+input[type="password"],
+input[type="tel"] {
+  @apply block w-full rounded-xl;
   @apply border py-2 px-4 border-gray-300 bg-gray-100;
 }
 
 input[type="email"] :disabled,
 input[type="text"] :disabled,
-input[type="password"] :disabled {
+input[type="password"] :disabled,
+input[type="tel"] :disabled {
   @apply bg-gray-400 text-gray-700 text-sm border-0 cursor-not-allowed;
 }
 
