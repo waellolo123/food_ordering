@@ -6,6 +6,9 @@ import { useEffect, useState } from "react";
 import { PiImageSquareBold } from "react-icons/pi";
 import { useEdgeStore } from "../../../lib/edgeStore";
 import {toast} from "react-hot-toast";
+import Link from "next/link";
+
+import Tabs from "@/components/layout/Tabs";
 
 
 const ProfilePage = () => {
@@ -20,7 +23,8 @@ const ProfilePage = () => {
   const [postalCode, setPostalCode] = useState(''); 
   const [city, setCity] = useState(''); 
   const [country, setCountry] = useState(''); 
-
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [active, setActive] = useState(true);
 
   useEffect(()=>{
     if(status === 'authenticated'){
@@ -33,6 +37,7 @@ const ProfilePage = () => {
           setPostalCode(data.postalCode);
           setCity(data.city);
           setCountry(data.country);
+          setIsAdmin(data.admin);
         })
       })
     }
@@ -98,7 +103,6 @@ const ProfilePage = () => {
     <section className="mt-8">
       <div className="w-[350px] md:w-[500px] max-w-xl mx-auto mt-10">
       <h1 className="text-center text-primary text-4xl ">Profile</h1>
-
       <div className="w-full flex flex-col gap-4 items-center">
           <div className="flex flex-col items-center mt-4">
             <div className="relative">
@@ -110,16 +114,32 @@ const ProfilePage = () => {
             <input type="file" id="profileImg" hidden  onChange={(e) => setFile(e.target.files?.[0])} />
             <button className="mt-4 text-sm py-1 px-3" type="button" onClick={uploadImage}>Change Avatar</button>
           </div>
+          {isAdmin && (
+            <>
+            <Tabs isAdmin={isAdmin} />
+            </>
+            )}
           <form className="w-full grow" onSubmit={handleProfileInfoUpdate}>
-            <input type="text" placeholder="First and lastname" className="mb-4" value={userName} onChange={(e)=>setUserName(e.target.value)}/>
-            <input type="email" value={session.data.user.email} className="bg-white border-none text-gray-400 mb-4" disabled/>
-            <input type="tel" className="bg-white border-none text-gray-400 mb-4" placeholder="Phone Number" value={phone} onChange={(e) => setPhone(e.target.value)}/>
-            <input type="text" className="bg-white border-none text-gray-400 mb-4" placeholder="Street address" value={streetAdress} onChange={(e) => setStreetAdress(e.target.value)}/>
+            <label className="text-slate-400">First and Lastname</label>
+            <input type="text" placeholder="First and lastname" className="mb-4 mt-1" value={userName} onChange={(e)=>setUserName(e.target.value)}/>
+            <label className="text-slate-400">Email</label> 
+            <input type="email" value={session.data.user.email} className="bg-white border-none text-gray-400 mb-4 mt-1" disabled={true}/>
+            <label className="text-slate-400">Phone Number</label> 
+            <input type="tel" className="bg-white border-none text-gray-400 mb-4 mt-1" placeholder="Phone Number" value={phone} onChange={(e) => setPhone(e.target.value)}/>
+            <label className="text-slate-400">Street Adress</label> 
+            <input type="text" className="bg-white border-none text-gray-400 mb-4 mt-1" placeholder="Street address" value={streetAdress} onChange={(e) => setStreetAdress(e.target.value)}/>
             <div className="flex items-center gap-3 mb-4">
-              <input type="text" className="bg-white border-none text-gray-400 my-0" placeholder="City" value={city} onChange={(e) => setCity(e.target.value)}/>
-              <input type="text" className="bg-white border-none text-gray-400 my-0" placeholder="Postal Code" value={postalCode} onChange={(e) => setPostalCode(e.target.value)}/>
+            <div className="">
+              <label className="text-slate-400">Cidy</label> 
+              <input type="text" className="bg-white border-none text-gray-400 mt-1" placeholder="City" value={city} onChange={(e) => setCity(e.target.value)}/>
+            </div>  
+            <div className="">
+              <label className="text-slate-400">Postal Code</label> 
+              <input type="text" className="bg-white border-none text-gray-400 mt-1" placeholder="Postal Code" value={postalCode} onChange={(e) => setPostalCode(e.target.value)}/>
             </div>
-            <input type="text" className="bg-white border-none text-gray-400 mb-4" placeholder="Country" value={country} onChange={(e) => setCountry(e.target.value)}/>
+            </div>
+            <label className="text-slate-400">country</label> 
+            <input type="text" className="bg-white border-none text-gray-400 mb-4 mt-1" placeholder="Country" value={country} onChange={(e) => setCountry(e.target.value)}/>
             <button type="submit">Save</button>
           </form>
       </div>

@@ -10,11 +10,9 @@ input[type="tel"] {
   @apply border py-2 px-4 border-gray-300 bg-gray-100;
 }
 
-input[type="email"] :disabled,
-input[type="text"] :disabled,
-input[type="password"] :disabled,
-input[type="tel"] :disabled {
-  @apply bg-gray-400 text-gray-700 text-sm border-0 cursor-not-allowed;
+
+input:disabled {
+  @apply bg-gray-300 text-gray-700 text-sm border-0 cursor-not-allowed py-3;
 }
 
 button{

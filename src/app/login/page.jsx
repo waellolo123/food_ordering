@@ -25,10 +25,10 @@ const LoginPage = () => {
   return (
     <section className="mt-10 w-full flex items-center flex-col justify-center">
       <h1 className="text-center text-primary text-4xl">Login</h1>
-      <p className="text-slate-500 mt-4">With Email and Password</p>
+      <p className="text-slate-500 my-4">With Email and Password</p>
       <form className="w-[400px]  block max-w-xl mx-auto" onSubmit={handleSubmit}>
-        <input type="text" placeholder="Email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} required disabled={isLoading}/>
-        <input type="text" placeholder="Password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} required disabled={isLoading}/>
+        <input type="text" placeholder="Email" name="email" className="mb-4" value={email} onChange={(e) => setEmail(e.target.value)} required disabled={isLoading}/>
+        <input type="text" placeholder="Password" name="password" className="mb-4" value={password} onChange={(e) => setPassword(e.target.value)} required disabled={isLoading}/>
         <button type="submit" disabled={isLoading}>{isLoading ? "Login Process..." : "Login"}</button>
         <div className="">
         <p className="text-slate-500 mt-4 text-center">Or with google</p>

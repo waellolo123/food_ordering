@@ -9,7 +9,8 @@ const UserSchema = new Schema({
   streetAdress: {type: String},
   postalCode: {type: String},
   city: {type: String},
-  country: {type: String}
+  country: {type: String},
+  admin: {type: Boolean, default: false}
 }, {timestamps: true});
 
 
